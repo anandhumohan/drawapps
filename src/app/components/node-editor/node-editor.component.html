@@ -1,0 +1,118 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script>
+   const selectElement = document.querySelector('.formFile');
+   
+   selectElement.addEventListener('change', (event) => {
+   alert('hai');
+   });
+</script>
+<ion-toolbar>
+   <ion-title>Edit</ion-title>
+   <ion-buttons slot="end">
+      <ion-button (click)="dismiss(false)">
+         <ion-icon name="close"></ion-icon>
+      </ion-button>
+   </ion-buttons>
+</ion-toolbar>
+<ion-content>
+   <div class="flexcenter functionsBar">
+      <ion-button (click) = "captureImage()" fill="clear">
+         <ion-icon name="camera-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click) = "pickImage()" fill="clear">
+         <ion-icon name="image-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click) = "captureFilm()" fill="clear">
+         <ion-icon name="videocam-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click) = "captureSound()" fill="clear">
+         <ion-icon name="mic-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click) = "getFile()" fill="clear">
+         <ion-icon name="attach-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click) = "getCanvas()" fill="clear">
+         <ion-icon name="color-palette-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click) = "getEditor()" fill="clear">
+         <ion-icon name="document-text-outline"></ion-icon>
+      </ion-button>
+   </div>
+   <div>
+      <ion-input placeholder="Title" rows="10" [(ngModel)]='node.value'></ion-input>
+   </div>
+   <div>
+      <button id="imgCapture" (click)="captureImageNow()" class="btn btn-primary form-control" type="button" style= 'display: none;'>Capture Image</button>
+   </div>
+   <div>
+      <button id="sodCapture" (click)="captureSoundNow()" class="btn btn-primary form-control" type="button" style= 'display: none;'>Capture Audio</button>
+   </div>
+   <div>
+      <button id="vedCapture" (click)="captureFilmNow()" class="btn btn-primary form-control" type="button" style= 'display: none;'>Capture Video</button>
+   </div>
+   <div>
+      <button id="pickImageId" (click)="pickImagesNow()" class="btn btn-primary form-control" type="button" style= 'display: none;'>Pick Image</button>
+   </div>
+   <div id="pickFileId" style= 'display: none;'>
+      <button  (click)="getFileNow()" class="btn btn-primary form-control" type="button" >Pick file</button>
+      <!--  <input id="pickFileId" type="file" class="hideInput" style= 'display: none;' (change)="getFileNow($event)">-->
+   <!--   <button ion-button full (click)="saveFiles()">Save Image</button>-->
+   <div class="flexcenter"><ion-button (click)="saveFiles()">Save</ion-button></div>
+   </div>
+   <div style= 'display: none;' id="pickCanvasId">
+      <ion-row>
+         <ion-col *ngFor="let color of colors" [style.background]="color" class="color-block" tappable
+         (click)="selectColor(color)"></ion-col>
+      </ion-row>
+      <ion-radio-group [(ngModel)]="selectedColor">
+      <ion-row>
+         <ion-col *ngFor="let color of colors" class="ion-text-center">
+            <ion-radio [value]="color"></ion-radio>
+         </ion-col>
+      </ion-row>
+      </ion-radio-group>
+      <ion-range min="2" max="20" color="primary" [(ngModel)]="lineWidth">
+      <ion-icon size="small" slot="start" name="brush"></ion-icon>
+      <ion-icon slot="end" name="brush"></ion-icon>
+      </ion-range>
+      <canvas #imageCanvas (mousedown)="startDrawing($event)" (touchstart)="startDrawing($event)"
+      (touchmove)="moved($event)" (mousemove)="moved($event)" (mouseup)="endDrawing()" (touchend)="endDrawing()"></canvas>
+    <!--  <button ion-button full (click)="saveCanvasImage()">Save Image</button>-->
+      <div class="flexcenter">
+      
+         <ion-button (click)="saveCanvasImage()">Save</ion-button></div>
+      <!--   <button ion-button full (click)="saveEditorImage()">Save Editor</button>-->
+   </div>
+   <div style= 'display: none;' id="pickEditorId">
+   <!--   <quill-editor [(ngModel)]="mytext"></quill-editor>-->
+      <div class="flexcenter">
+      
+      <ion-button (click)="saveEditorImage()">Save</ion-button></div>
+   <!--   <button ion-button full (click)="saveEditorImage()">Save Editor</button>-->
+   </div>
+   <ion-item-sliding *ngFor="let f of node.files">
+      <ion-item (click)="openFile(f)">
+         <ion-icon name="image" slot="start" *ngIf="f.name.endsWith('jpg') || f.name.endsWith('webp')"></ion-icon>
+         <ion-icon name="videocam" slot="start" *ngIf="f.name.endsWith('MOV') || f.name.endsWith('mp4')"></ion-icon>
+         <ion-icon name="mic" slot="start" *ngIf="f.name.endsWith('wav')"></ion-icon>
+         <ion-icon name="document" slot="start" *ngIf="f.name.endsWith('pdf')"></ion-icon>
+         <ion-label class="ion-text-wrap">
+            {{ f.name }}
+            <p>{{ f.fullPath }}</p>
+         </ion-label>
+      </ion-item>
+      <ion-item-options side="start">
+         <ion-item-option (click)="deleteFile(f)" color="danger">
+            <ion-icon name="trash" slot="icon-only"></ion-icon>
+         </ion-item-option>
+      </ion-item-options>
+   </ion-item-sliding>
+   <div>
+      <img id = 'imageElement' src ="" />
+   </div>
+   <div class="flexcenter" id="mainButtonId" style= 'display: none;'>
+      <ion-button (click)="saveFile()">Save</ion-button>
+   </div>
+   
+</ion-content>

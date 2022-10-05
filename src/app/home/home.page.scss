@@ -1,0 +1,22 @@
+.projectsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    background: var(--ion-color-light);
+    height: 100%;
+}
+
+.project {
+    border: 2px solid;
+    padding: 30px;
+    border-radius: 100%;
+    width: 20vw;
+    height: 20vw;
+    margin: 2vw;
+    display: flex;
+    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background: var(--ion-color-medium-contrast);
+}

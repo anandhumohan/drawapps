@@ -1,0 +1,48 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>View Project</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+
+
+
+<div id="projectMapWrapper">
+
+ 
+    <div *ngIf="grandParent" class="grandParent" (click)="moveToNode(grandParent.id)"><span>{{grandParent.value}}</span></div>
+    <div *ngIf="grandParent" class="connectingLineGrandParent" style="position:absolute;">
+      <svg width="100%" height="100%"><line x1="0" y1="0" x2="50%" y2="50%" stroke="black" stroke-width="1" stroke-dasharray="5,5"/></svg>
+    </div>
+ 
+
+
+  <div class="mainNode">
+
+    <div class="connectingLine" *ngFor="let child of childNodes; let i = index" style="position:absolute;">
+      <svg width="500" height="500"><line x1="250" y1="250" [attr.x2]="getLeft(i)+237" [attr.y2]="getTop(i)+239" stroke="black" stroke-width="2"/></svg>
+    </div>
+    <div class="childNode" *ngFor="let child of childNodes; let i = index" [style.left.px]="getLeft(i)" [style.top.px]="getTop(i)" (click)="moveToNode(child.id)">{{child.value}}</div>
+    
+    
+    <span class="mainNodeData" (click)="openEditor(0, false, false)">{{parentNode.value}}</span>
+    <!-- Add Node Button -->
+    <div *ngIf="childNodes.length < 10">
+    <div class="addNode" *ngFor="let child of childNodes; let i = index" [style.left.px]="getLeftAdd(i)" [style.top.px]="getTopAdd(i)" (click)="openEditor(i, true, true)">+</div>
+    </div>
+    <div class="addNode" *ngIf="!childNodes.length" [style.left.px]="90" [style.top.px]="getTopAdd(40)" (click)="openEditor(0, true, true)">+</div>
+
+  </div>
+
+</div>
+
+
+
+  
+
+</ion-content>

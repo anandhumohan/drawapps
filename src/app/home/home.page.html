@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Home</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="createDoc()" ><ion-icon name="add-outline"></ion-icon></ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="projectsContainer">
+    <div class="project" *ngFor="let project of projects; let i = index" routerLink="/project/{{i}}" [queryParams]="{name: project}" >
+      {{project}}
+    </div>
+  </div>
+
+</ion-content>
