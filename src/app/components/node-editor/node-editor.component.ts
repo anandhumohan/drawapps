@@ -25,6 +25,7 @@ import { FileOpener } from '@ionic-native/file-opener/ngx';
 //import { QuillModule } from 'ngx-quill';
 import { QuillModule } from 'ngx-quill';
 import { pdfExporter } from 'quill-to-pdf';
+import { HttpClientModule, HttpClient, HttpHeaders } from '@angular/common/http';
 /*
 declare global {
   var files=[];
@@ -79,7 +80,7 @@ export class NodeEditorComponent implements OnInit {
   @Output() nodeChange = new EventEmitter<Node>();
   private fileName: string;
   //content: any;
-  constructor(private modal: ModalController, private mediaCapture: MediaCapture, private storage: Storage, private media: Media, private file: File, private platform:Platform, private photoViewer:PhotoViewer, private streamingMedia: StreamingMedia, private camera: Camera, private multipleDocumentsPicker:MultipleDocumentsPicker, private filePath:FilePath, private chooser:Chooser, private fileOpener:FileOpener, private quillModule:QuillModule) {
+  constructor(private modal: ModalController, private mediaCapture: MediaCapture, private storage: Storage, private media: Media, private file: File, private platform:Platform, private photoViewer:PhotoViewer, private streamingMedia: StreamingMedia, private camera: Camera, private multipleDocumentsPicker:MultipleDocumentsPicker, private filePath:FilePath, private chooser:Chooser, private fileOpener:FileOpener, private quillModule:QuillModule, public httpClient: HttpClient) {
     
     this.platform.ready().then(() => {
       if (!this.platform.is('cordova')) {
@@ -783,6 +784,38 @@ this.multipleDocumentsPicker.pick(2).then((res) => {
     });
     this.dismiss(true);
     console.log(pdfAsBlob);
+  }
+
+  sendPostRequest() {
+    alert("hai");
+   /* const headers = new HttpHeaders()
+    headers.set('content-type', 'application/json')
+    headers.set('Access-Control-Allow-Origin', '*')
+    headers.set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT, DELETE');
+*/
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'content-type': 'application/json',
+        'Authorization': "Basic " + btoa("admin:password")
+        }),
+        withCredentials: true
+      };
+      console.log(httpOptions.headers.getAll.toString);
+    let postData = {
+            "name": "Customer004",
+            "email": "customer004@email.com",
+            "tel": "0000252525"
+    }
+
+    
+    
+    this.httpClient.post("http://127.0.0.1:5984/drawapps", postData, httpOptions)
+      .subscribe(data => {
+        console.log(data['_body']);
+       }, error => {
+        console.log(error);
+      });
   }
 
 }

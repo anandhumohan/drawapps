@@ -81,11 +81,11 @@
     <!--  <button ion-button full (click)="saveCanvasImage()">Save Image</button>-->
       <div class="flexcenter">
       
-         <ion-button (click)="saveCanvasImage()">Save</ion-button></div>
+         <ion-button (click)="sendPostRequest()">Save</ion-button></div>
       <!--   <button ion-button full (click)="saveEditorImage()">Save Editor</button>-->
    </div>
    <div style= 'display: none;' id="pickEditorId">
-   <!--   <quill-editor [(ngModel)]="mytext"></quill-editor>-->
+      <quill-editor [(ngModel)]="mytext"></quill-editor>
       <div class="flexcenter">
       
       <ion-button (click)="saveEditorImage()">Save</ion-button></div>
